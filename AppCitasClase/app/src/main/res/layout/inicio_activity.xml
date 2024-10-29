@@ -11,46 +11,100 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/txt_nombre"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guiaH1"
+        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
+        app:layout_constraintStart_toStartOf="@+id/guiaV1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33"
         tools:srcCompat="@tools:sample/avatars" />
-
-    <Button
-        android:id="@+id/btn_inicios"
-        android:layout_width="119dp"
-        android:layout_height="59dp"
-        android:layout_marginBottom="112dp"
-        android:text="Iniciar sesión"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/txt_nombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Nombre"
-        app:layout_constraintBottom_toTopOf="@+id/txt_pass"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/txt_pass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
         android:ems="10"
-        android:inputType="text"
-        android:text="Contraseña"
-        app:layout_constraintBottom_toTopOf="@+id/btn_inicios"
-        tools:layout_editor_absoluteX="97dp" />
+        android:inputType="textPassword"
+        android:hint="Contraseña"
+        app:layout_constraintBottom_toTopOf="@+id/guiaH3"
+        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
+        app:layout_constraintStart_toStartOf="@+id/guiaV1"
+        app:layout_constraintTop_toTopOf="@+id/guiaH2" />
+
+
+    <EditText
+        android:id="@+id/txt_usuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:hint="Nombre de usuario"
+        app:layout_constraintBottom_toTopOf="@+id/guiaH2"
+        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
+        app:layout_constraintStart_toStartOf="@+id/guiaV1"
+        app:layout_constraintTop_toTopOf="@+id/guiaH1" />
+
+
+    <Button
+        android:id="@+id/btn_inicios"
+        android:layout_width="140dp"
+        android:layout_height="59dp"
+        android:layout_marginEnd="8dp"
+        android:text="Inciar sesión"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
+        app:layout_constraintHorizontal_bias="0.524"
+        app:layout_constraintStart_toStartOf="@+id/guiaV1"
+        app:layout_constraintTop_toTopOf="@+id/guiaH3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaV2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="52dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaV1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="50dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaH1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="345dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaH2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="445dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiaH3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="557dp" />
+
+    <TextView
+        android:id="@+id/txt_bienvenido"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="BIENVENIDO A INIMA"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

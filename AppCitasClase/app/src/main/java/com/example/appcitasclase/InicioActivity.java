@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,15 +26,12 @@ public class InicioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inicio_activity);
 
-        // Inicializar Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Enlazamos las vistas con sus ID en el layout
-        editTextUsername = findViewById(R.id.txt_nombre);
+        editTextUsername = findViewById(R.id.txt_usuario);
         editTextPassword = findViewById(R.id.txt_pass);
         btn_inicios = findViewById(R.id.btn_inicios);
 
-        // Configuramos el botón de inicio de sesión
         btn_inicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +40,6 @@ public class InicioActivity extends AppCompatActivity {
         });
     }
 
-    // Método para validar el inicio de sesión con Firebase
     private void validateLogin() {
         String email = editTextUsername.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -55,22 +49,18 @@ public class InicioActivity extends AppCompatActivity {
             return;
         }
 
-        // Iniciar sesión con Firebase Authentication
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<com.google.firebase.auth.AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<com.google.firebase.auth.AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Inicio de sesión exitoso
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(InicioActivity.this, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show();
 
-                            // Navegamos a la siguiente pantalla (MenuActivity)
                             Intent intent = new Intent(InicioActivity.this, MenuActivity.class);
                             startActivity(intent);
                             finish(); // Cierra la actividad actual para que el usuario no regrese con el botón de retroceso
                         } else {
-                            // Si el inicio de sesión falla, muestra un mensaje al usuario
                             Toast.makeText(InicioActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                         }
                     }

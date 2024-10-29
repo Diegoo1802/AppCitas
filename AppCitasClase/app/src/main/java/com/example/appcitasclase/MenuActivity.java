@@ -18,14 +18,12 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
 
-        // Enlazar botones con sus IDs en el layout
         btn_perfil = findViewById(R.id.btn_perfil);
         btn_citas = findViewById(R.id.btn_citas);
         btn_reservas = findViewById(R.id.btn_reservas);
 
-        // Configurar listeners para cada botón
 
-        // Ir a PerfilActivity
+
         btn_perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +32,7 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        // Ir a CitasActivity
+
         btn_citas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,7 +41,7 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
-        // Ir a ReservasActivity
+
         btn_reservas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
