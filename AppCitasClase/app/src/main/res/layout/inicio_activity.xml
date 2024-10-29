@@ -23,10 +23,11 @@
         android:id="@+id/btn_inicios"
         android:layout_width="119dp"
         android:layout_height="59dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="112dp"
         android:text="Iniciar sesión"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="147dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/txt_nombre"
