@@ -5,120 +5,98 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_background"
     tools:context=".InicioActivity">
 
-    <!-- Título "Bienvenido" -->
     <TextView
         android:id="@+id/txt_bienvenido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="BIENVENIDO A INIMA"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textSize="26sp"
-        android:textStyle="bold"
+        android:layout_marginTop="80dp"
         android:gravity="center"
+        android:text="¡Bienvenido a INIMA!"
+        android:textColor="@color/color_primary"
+        android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Imagen (Logo o avatar) -->
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/guiaH1"
-        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
-        app:layout_constraintStart_toStartOf="@+id/guiaV1"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_usuario"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_bienvenido"
+        app:srcCompat="@drawable/inima"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Campo de texto para el correo/usuario -->
     <EditText
         android:id="@+id/txt_usuario"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
         android:hint="Nombre de usuario"
-        app:layout_constraintBottom_toTopOf="@+id/guiaH2"
-        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
-        app:layout_constraintStart_toStartOf="@+id/guiaV1"
-        app:layout_constraintTop_toTopOf="@+id/guiaH1" />
+        android:textColor="@color/color_text_dark"
+        android:textColorHint="@color/color_hint"
+        android:backgroundTint="@color/color_white"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/txt_pass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Campo de texto para la contraseña -->
     <EditText
         android:id="@+id/txt_pass"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
         android:hint="Contraseña"
-        app:layout_constraintBottom_toTopOf="@+id/guiaH3"
-        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
-        app:layout_constraintStart_toStartOf="@+id/guiaV1"
-        app:layout_constraintTop_toTopOf="@+id/guiaH2" />
+        android:textColor="@color/color_text_dark"
+        android:textColorHint="@color/color_hint"
+        android:backgroundTint="@color/color_white"
+        android:gravity="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_inicios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_usuario"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Botón de inicio de sesión -->
-
-    <!-- Guías para la disposición de las vistas -->
     <Button
         android:id="@+id/btn_inicios"
-        android:layout_width="140dp"
-        android:layout_height="59dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
         android:text="Iniciar sesión"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
-        app:layout_constraintHorizontal_bias="0.524"
-        app:layout_constraintStart_toStartOf="@+id/guiaV1"
-        app:layout_constraintTop_toTopOf="@+id/guiaH3"
-        app:layout_constraintVertical_bias="0.191" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaV2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="52dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaV1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="50dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaH1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="345dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaH2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="445dp" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guiaH3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="557dp" />
+        android:textColor="@android:color/black"
+    android:backgroundTint="@color/color_button"
+    android:textSize="20sp"
+    android:layout_marginTop="30dp"
+    app:layout_constraintBottom_toTopOf="@+id/btn_registro"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/txt_pass" />
 
     <Button
         android:id="@+id/btn_registro"
-        android:layout_width="141dp"
-        android:layout_height="55dp"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
         android:text="Registrarse"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guiaV2"
-        app:layout_constraintStart_toStartOf="@+id/guiaV1"
-        app:layout_constraintTop_toBottomOf="@+id/btn_inicios" />
+        android:textColor="@android:color/black"
+    android:backgroundTint="@color/color_secondary"
+    android:textSize="20sp"
+    android:layout_marginTop="20dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btn_inicios" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

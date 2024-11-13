@@ -40,7 +40,7 @@ public class MenuActivity extends AppCompatActivity {
         // Inicializar los botones
         btn_perfil = findViewById(R.id.btn_perfil);
         btn_citas = findViewById(R.id.btn_citas);
-        btn_reservas = findViewById(R.id.btn_logout);
+        btn_reservas = findViewById(R.id.btn_reservas);
         btn_logout = findViewById(R.id.btn_logout); // Suponiendo que agregarás un botón para cerrar sesión
 
         // Configurar los listeners para los botones

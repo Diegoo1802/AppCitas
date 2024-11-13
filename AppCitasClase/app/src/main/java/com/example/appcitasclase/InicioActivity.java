@@ -20,7 +20,7 @@ public class InicioActivity extends AppCompatActivity {
     private EditText editTextUsername;
     private EditText editTextPassword;
     private Button btn_inicios;
-    private Button btn_registro;  // Añadir el botón de registro
+    private Button btn_registro;
 
     private FirebaseAuth mAuth;
 
@@ -32,20 +32,20 @@ public class InicioActivity extends AppCompatActivity {
         // Inicializar FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
-        // Verificar si ya hay un usuario autenticado
+        // Verificar si el usuario ya está autenticado
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            // Si hay un usuario autenticado, redirigir directamente a la pantalla principal
+            // Si el usuario ya está autenticado, redirigir al menú
             Intent intent = new Intent(InicioActivity.this, MenuActivity.class);
             startActivity(intent);
-            finish();  // Cierra la actividad actual para que no se quede en el stack
+            finish(); // Cierra la actividad actual para evitar que el usuario regrese a la pantalla de inicio de sesión
         }
 
         // Inicializar las vistas
         editTextUsername = findViewById(R.id.txt_usuario);
         editTextPassword = findViewById(R.id.txt_pass);
         btn_inicios = findViewById(R.id.btn_inicios);
-        btn_registro = findViewById(R.id.btn_registro); // Inicializar el botón de registro
+        btn_registro = findViewById(R.id.btn_registro);
 
         // Configurar el botón de inicio de sesión
         btn_inicios.setOnClickListener(new View.OnClickListener() {
