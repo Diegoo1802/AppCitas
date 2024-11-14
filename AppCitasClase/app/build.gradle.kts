@@ -55,6 +55,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.5.1"))  // Firebase Bill of Materials
     implementation("com.google.firebase:firebase-analytics")  // Firebase Analytics
     implementation("com.google.firebase:firebase-auth:22.0.0")  // Firebase Authentication
+    implementation("com.google.firebase:firebase-database:20.0.5")  // Firebase Realtime Database
+    implementation ("com.google.firebase:firebase-core:20.1.0")  // Firebase Core
+
 
     // Otras dependencias comunes que puedas necesitar
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")  // ConstraintLayout para diseño

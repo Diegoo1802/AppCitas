@@ -13,4 +13,7 @@
         <color name="color_text_light">#757575</color> <!-- Gris intermedio para textos no tan destacados -->
         <color name="color_border">#B0BEC5</color> <!-- Gris medio para bordes o divisores -->
         <color name="color_accent">#64B5F6</color> <!-- Azul suave para elementos destacados -->
+        <color name="colorButtonPrimary">#81C784</color> <!-- Verde suave para botones principales -->
+        <color name="colorButtonSecondary">#FF7043</color> <!-- Rojo suave para botón de cierre de sesión -->
+
 </resources>

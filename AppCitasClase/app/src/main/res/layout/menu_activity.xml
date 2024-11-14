@@ -1,64 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MenuActivity">
 
-    <!-- Imagen de encabezado o logo -->
-    <ImageView
-        android:id="@+id/imageView2"
+    <!-- Texto de bienvenida -->
+    <TextView
+        android:id="@+id/txt_bienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
+        android:text="Bienvenido"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_primary"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView2"
+        android:layout_marginTop="20dp"/>
 
-    <!-- LinearLayout con los botones -->
+
+    <!-- Logo o Imagen de encabezado -->
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_bienvenida"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/inima"/>
+
+    <!-- Contenedor LinearLayout para los botones -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:padding="16dp"
-        android:gravity="center">
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Botón Perfil -->
         <Button
             android:id="@+id/btn_perfil"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Perfil" />
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:text="Perfil"
+            android:textSize="20sp"
+            android:backgroundTint="@color/colorButtonPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp" />
 
         <!-- Botón Citas -->
         <Button
             android:id="@+id/btn_citas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Citas" />
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:text="Citas"
+            android:textSize="20sp"
+            android:backgroundTint="@color/colorButtonPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp" />
 
         <!-- Botón Reservas -->
         <Button
             android:id="@+id/btn_reservas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reservas" />
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:text="Reservas"
+            android:textSize="20sp"
+            android:backgroundTint="@color/colorButtonPrimary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp" />
 
         <!-- Botón Cerrar sesión -->
         <Button
             android:id="@+id/btn_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Cerrar sesión" />
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:text="Cerrar sesión"
+            android:textSize="20sp"
+            android:backgroundTint="@color/colorButtonSecondary"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 
