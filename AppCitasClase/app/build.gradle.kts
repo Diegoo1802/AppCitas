@@ -1,3 +1,5 @@
+// build.gradle.kts (Nivel de Aplicación)
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")  // Aplica el plugin de Google Services para Firebase
@@ -51,14 +53,15 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.espresso:espresso-core:3.5.1")
 
-    // Dependencias de Firebase (usando Firebase BoM para manejar versiones automáticamente)
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))  // Firebase Bill of Materials
+    // Firebase Bill of Materials (BoM) para manejar versiones automáticamente
+    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
+
+    // Dependencias específicas de Firebase
     implementation("com.google.firebase:firebase-analytics")  // Firebase Analytics
-    implementation("com.google.firebase:firebase-auth:22.0.0")  // Firebase Authentication
-    implementation("com.google.firebase:firebase-database:20.0.5")  // Firebase Realtime Database
-    implementation ("com.google.firebase:firebase-core:20.1.0")  // Firebase Core
+    implementation("com.google.firebase:firebase-auth")  // Firebase Authentication
+    implementation("com.google.firebase:firebase-database")  // Firebase Realtime Database
+    implementation("com.google.firebase:firebase-firestore")  // Firebase Firestore
+    implementation("com.google.firebase:firebase-messaging")  // Firebase Cloud Messaging (si lo necesitas)
+    implementation("com.google.android.material:material:1.9.0")  // Asegúrate de tener la versión correcta
 
-
-    // Otras dependencias comunes que puedas necesitar
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")  // ConstraintLayout para diseño
 }

@@ -1,19 +1,13 @@
 pluginManagement {
     repositories {
-        google {
-            content {
-                includeGroupByRegex("com\\.android.*")
-                includeGroupByRegex("com\\.google.*")
-                includeGroupByRegex("androidx.*")
-            }
-        }
+        google()
         mavenCentral()
         gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)  // Asegúrate de que se usen los repositorios definidos en `settings.gradle.kts`
     repositories {
         google()
         mavenCentral()
@@ -21,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "AppCitasClase"
-include(":app")
+include(":app")  // Asegúrate de incluir el módulo 'app'
