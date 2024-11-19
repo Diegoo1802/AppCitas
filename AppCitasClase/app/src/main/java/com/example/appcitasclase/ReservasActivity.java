@@ -1,8 +1,8 @@
 package com.example.appcitasclase;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -21,48 +21,55 @@ import java.util.HashMap;
 public class ReservasActivity extends AppCompatActivity {
 
     private Spinner spinnerMasajes;
-    private Button btnFecha, btnHora, btnConfirmar;
+    private Button btnFecha, btnHora, btnConfirmar, btnVolverMenu;
     private TextView txtResumen;
     private String fechaSeleccionada, horaSeleccionada, masajeSeleccionado;
 
     private FirebaseFirestore db;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservas_activity);
 
-        // Inicializamos los elementos de la vista
+        // Inicializar elementos de la vista
         spinnerMasajes = findViewById(R.id.spinner_masajes);
         btnFecha = findViewById(R.id.btn_fecha);
         btnHora = findViewById(R.id.btn_hora);
         btnConfirmar = findViewById(R.id.btn_confirmar);
+        btnVolverMenu = findViewById(R.id.btn_volver_menu);
         txtResumen = findViewById(R.id.txt_resumen);
 
-        // Inicializamos Firestore
+        // Inicializar Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Recuperamos el userId que pasamos desde MenuActivity
-        String userId = getIntent().getStringExtra("USER_ID");
+        // Obtener el userId desde el intent
+        userId = getIntent().getStringExtra("USER_ID");
 
         if (userId == null || userId.isEmpty()) {
             Toast.makeText(this, "Usuario no encontrado. Por favor, vuelve a iniciar sesión.", Toast.LENGTH_SHORT).show();
-            finish();  // Termina la actividad si no encontramos el userId
+            finish();
             return;
         }
 
-        // Configuramos el Spinner de masajes
+        // Configurar el Spinner de masajes
         setupSpinner();
 
-        // Configuramos los listeners para los botones
+        // Configurar botones
         btnFecha.setOnClickListener(v -> selectDate());
         btnHora.setOnClickListener(v -> selectTime());
-
-        // El OnClickListener para el botón de confirmar
         btnConfirmar.setOnClickListener(v -> confirmarReserva(userId));
+
+        // Configurar botón "Volver al menú"
+        btnVolverMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(ReservasActivity.this, MenuActivity.class);
+            intent.putExtra("USER_ID", userId); // Pasar el USER_ID al menú
+            startActivity(intent);
+            finish();
+        });
     }
 
-    // Configura el Spinner de masajes
     private void setupSpinner() {
         String[] masajes = {"Relajante", "Descontracturante", "Piedras calientes", "Aromaterapia"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, masajes);
@@ -70,7 +77,6 @@ public class ReservasActivity extends AppCompatActivity {
         spinnerMasajes.setAdapter(adapter);
     }
 
-    // Método para seleccionar la fecha
     private void selectDate() {
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Seleccionar Fecha")
@@ -83,7 +89,6 @@ public class ReservasActivity extends AppCompatActivity {
         });
     }
 
-    // Método para seleccionar la hora
     private void selectTime() {
         MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -106,39 +111,33 @@ public class ReservasActivity extends AppCompatActivity {
         });
     }
 
-    // Actualiza el resumen con los datos seleccionados
     private void actualizarResumen() {
         masajeSeleccionado = spinnerMasajes.getSelectedItem().toString();
         txtResumen.setText(String.format("Masaje: %s\nFecha: %s\nHora: %s", masajeSeleccionado, fechaSeleccionada, horaSeleccionada));
     }
 
-    // Método para confirmar la reserva
     private void confirmarReserva(String userId) {
-        // Verificar que se hayan seleccionado todos los campos
         if (fechaSeleccionada == null || horaSeleccionada == null || masajeSeleccionado == null) {
-            Toast.makeText(this, "Por favor, selecciona todos los campos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Por favor, selecciona todos los detalles de la reserva.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Crear un HashMap con los datos de la reserva
         HashMap<String, Object> reserva = new HashMap<>();
         reserva.put("masaje", masajeSeleccionado);
         reserva.put("fecha", fechaSeleccionada);
         reserva.put("hora", horaSeleccionada);
-        reserva.put("usuario", userId);  // Guardamos el ID de usuario para poder asociar la reserva a él
+        reserva.put("usuario", userId);
 
-        // Guardar la reserva en Firestore
-        db.collection("reservas")  // Accede a la colección 'reservas'
-                .document(userId)  // Usamos el UID del usuario para almacenar las reservas bajo su nombre
-                .collection("reservasUsuario")  // Subcolección donde almacenamos las reservas de cada usuario
-                .add(reserva)  // Añadimos la reserva
+        db.collection("reservas")
+                .document(userId)
+                .collection("reservasUsuario")
+                .add(reserva)
                 .addOnSuccessListener(documentReference -> {
-                    Log.d("Reserva", "Reserva guardada con éxito");
                     Toast.makeText(this, "Reserva confirmada con éxito", Toast.LENGTH_SHORT).show();
-                    finish();  // Cerrar la pantalla de reservas
+                    finish();
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Reserva", "Error al guardar la reserva", e);
+                    Log.e("ReservasActivity", "Error al guardar la reserva", e);
                     Toast.makeText(this, "Error al guardar la reserva", Toast.LENGTH_SHORT).show();
                 });
     }

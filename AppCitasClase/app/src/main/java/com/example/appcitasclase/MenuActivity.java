@@ -6,8 +6,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MenuActivity extends AppCompatActivity {
@@ -15,65 +17,98 @@ public class MenuActivity extends AppCompatActivity {
     private Button btn_perfil;
     private Button btn_citas;
     private Button btn_reservas;
-    private Button btn_logout; // Botón de cierre de sesión
-    private TextView txt_bienvenida; // Texto de bienvenida para el usuario
-    private FirebaseFirestore db; // Instancia de Firestore
+    private Button btn_logout;
+    private TextView txt_bienvenida;
+
+    private FirebaseFirestore db;
+    private String userId;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu_activity);
 
-        // Inicializamos Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Inicializar los elementos de la interfaz
-        txt_bienvenida = findViewById(R.id.txt_bienvenida); // Asegúrate de tener este TextView en el XML
+        // Inicializamos los elementos de la interfaz
+        txt_bienvenida = findViewById(R.id.txt_bienvenida);
         btn_perfil = findViewById(R.id.btn_perfil);
         btn_citas = findViewById(R.id.btn_citas);
         btn_reservas = findViewById(R.id.btn_reservas);
         btn_logout = findViewById(R.id.btn_logout);
 
-        // Configurar los listeners para los botones
-        btn_perfil.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuActivity.this, PerfilActivity.class);
-            startActivity(intent);
-        });
+        // Recuperar el userId y el userName desde el Intent
+        userId = getIntent().getStringExtra("USER_ID");
+        userName = getIntent().getStringExtra("USER_NAME");
 
-        btn_citas.setOnClickListener(v -> {
-            // Redirigir a CitasActivity
-            Intent intent = new Intent(MenuActivity.this, CitasActivity.class);
-            startActivity(intent);
-        });
+        if (userId == null || userId.isEmpty()) {
+            Toast.makeText(MenuActivity.this, "No se encontró el ID de usuario", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        btn_reservas.setOnClickListener(v -> {
-            // Recuperamos el userId que pasamos desde la actividad anterior (por ejemplo, LoginActivity)
-            String userId = getIntent().getStringExtra("USER_ID");
-
-            if (userId != null && !userId.isEmpty()) {
-                // Redirigir a ReservasActivity y pasar el userId
-                Intent intent = new Intent(MenuActivity.this, ReservasActivity.class);
-                intent.putExtra("USER_ID", userId); // Pasamos el userId al Intent
-                startActivity(intent);
-            } else {
-                Toast.makeText(MenuActivity.this, "No se encontró el ID de usuario", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Configurar el listener para el botón de cierre de sesión
-        btn_logout.setOnClickListener(v -> {
-            // Cerrar sesión del usuario
-            Intent intent = new Intent(MenuActivity.this, InicioActivity.class);
-            startActivity(intent);
-            finish(); // Cerrar la actividad actual
-        });
-
-        // Recuperar el nombre del usuario desde el Intent
-        String userName = getIntent().getStringExtra("USER_NAME");
-
-        if (userName != null && !userName.isEmpty()) {
-            // Mostrar el nombre del usuario en el TextView de bienvenida
+        // Verificar si el nombre de usuario está disponible
+        if (userName == null || userName.isEmpty()) {
+            // Si no está disponible, buscar el nombre desde Firestore
+            fetchUserNameFromFirestore(userId);
+        } else {
+            // Si el nombre ya está disponible, mostrarlo
             txt_bienvenida.setText("¡Bienvenido, " + userName + "!");
         }
+
+        // Navegar a PerfilActivity pasando el userId
+        btn_perfil.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, PerfilActivity.class);
+            intent.putExtra("USER_ID", userId);
+            intent.putExtra("USER_NAME", userName); // Pasar también el nombre
+            startActivity(intent);
+        });
+
+        // Navegar a CitasActivity pasando el userId
+        btn_citas.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, CitasActivity.class);
+            intent.putExtra("USER_ID", userId);
+            intent.putExtra("USER_NAME", userName); // Pasar también el nombre
+            startActivity(intent);
+        });
+
+        // Navegar a ReservasActivity pasando el userId
+        btn_reservas.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, ReservasActivity.class);
+            intent.putExtra("USER_ID", userId);
+            intent.putExtra("USER_NAME", userName); // Pasar también el nombre
+            startActivity(intent);
+        });
+
+        // Cerrar sesión y redirigir a la pantalla de inicio
+        btn_logout.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuActivity.this, InicioActivity.class);
+            startActivity(intent);
+            finish();
+        });
+    }
+
+    /**
+     * Método para obtener el nombre del usuario desde Firestore
+     */
+    private void fetchUserNameFromFirestore(@NonNull String userId) {
+        db.collection("usuarios")
+                .document(userId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        userName = documentSnapshot.getString("nombre");
+                        if (userName != null && !userName.isEmpty()) {
+                            txt_bienvenida.setText("¡Bienvenido, " + userName + "!");
+                        } else {
+                            txt_bienvenida.setText("¡Bienvenido!");
+                        }
+                    } else {
+                        txt_bienvenida.setText("¡Bienvenido!");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(MenuActivity.this, "Error al cargar los datos del usuario", Toast.LENGTH_SHORT).show();
+                });
     }
 }

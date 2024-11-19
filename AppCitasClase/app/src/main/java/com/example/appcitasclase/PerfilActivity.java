@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Random;
 
@@ -18,7 +18,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     private TextView txtNombre, txtEmail, txtContraseña;
     private ImageView imgPerfil;
-    private Button btnModificar, btnVolverMenu;
+    private Button btnBorrarCuenta, btnVolverMenu;
 
     private FirebaseFirestore db;
     private String userId;
@@ -34,46 +34,49 @@ public class PerfilActivity extends AppCompatActivity {
         // Obtener el ID del usuario desde el Intent
         userId = getIntent().getStringExtra("USER_ID");
 
+        // Verificar que el userId no es null ni vacío
+        if (userId == null || userId.isEmpty()) {
+            Toast.makeText(this, "Error: No se pasó el ID del usuario", Toast.LENGTH_LONG).show();
+            finish();  // Finaliza la actividad si no se pasó el ID correctamente
+            return;
+        }
+
         // Inicializar vistas
         txtNombre = findViewById(R.id.txt_nombre);
         txtEmail = findViewById(R.id.txt_email);
         txtContraseña = findViewById(R.id.txt_contraseña);
         imgPerfil = findViewById(R.id.img_perfil);
-        btnModificar = findViewById(R.id.btn_modificar);
+        btnBorrarCuenta = findViewById(R.id.btn_borrar_cuenta);
         btnVolverMenu = findViewById(R.id.btn_volver_menu);
 
         // Cargar los datos del usuario desde Firestore
         loadUserProfile();
 
-        // Configurar el botón de modificar perfil
-        btnModificar.setOnClickListener(v -> {
-            // Aquí podrías redirigir a una actividad para modificar el perfil (como cambiar la contraseña o la foto)
-            Intent intent = new Intent(PerfilActivity.this, PerfilActivity.class);
-            intent.putExtra("USER_ID", userId); // Pasar el ID del usuario
-            startActivity(intent);
+        // Configurar el botón para borrar la cuenta
+        btnBorrarCuenta.setOnClickListener(v -> {
+            deleteUserAccount();
         });
 
         // Configurar el botón para volver al menú
         btnVolverMenu.setOnClickListener(v -> {
             Intent intent = new Intent(PerfilActivity.this, MenuActivity.class);
+            intent.putExtra("USER_ID", userId); // Pasar el ID del usuario al menú
             startActivity(intent);
-            finish(); // Finalizar la actividad actual
+            finish(); // Finaliza la actividad actual
         });
     }
 
     // Método para cargar el perfil del usuario desde Firestore
     private void loadUserProfile() {
         db.collection("usuarios")
-                .document(userId) // Obtener el documento del usuario usando su ID
+                .document(userId)  // Obtener el documento del usuario usando su ID
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            // Obtener los datos del usuario
                             Usuario usuario = document.toObject(Usuario.class);
 
-                            // Mostrar la información del usuario
                             if (usuario != null) {
                                 txtNombre.setText("Nombre: " + usuario.getNombre());
                                 txtEmail.setText("Email: " + usuario.getEmail());
@@ -92,6 +95,22 @@ public class PerfilActivity extends AppCompatActivity {
                 });
     }
 
+    // Método para borrar la cuenta del usuario
+    private void deleteUserAccount() {
+        db.collection("usuarios")
+                .document(userId)  // Obtener el documento del usuario usando su ID
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(PerfilActivity.this, "Cuenta eliminada con éxito", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(PerfilActivity.this, InicioActivity.class));  // Redirigir al login
+                    finish();  // Finalizar la actividad actual
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(PerfilActivity.this, "Error al eliminar la cuenta", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    // Método para generar una imagen aleatoria de perfil
     private int getRandomProfileImage() {
         Random random = new Random();
         int randomIndex = random.nextInt(3);

@@ -8,13 +8,13 @@
     android:background="@color/color_background"
     tools:context=".ReservasActivity">
 
-    <!-- Título principal -->
+    <!-- Título -->
     <TextView
-        android:id="@+id/tv_reserva"
+        android:id="@+id/txtCitasTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selecciona tu masaje, fecha y hora"
-        android:textSize="22sp"
+        android:text="Reserva tu cita"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/color_accent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,80 +22,84 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="32dp" />
 
-    <!-- Selector de masaje -->
+    <!-- Spinner para los masajes -->
     <Spinner
         android:id="@+id/spinner_masajes"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
+        android:spinnerMode="dropdown"
         android:backgroundTint="@color/color_white"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tv_reserva"
+        android:popupBackground="@color/color_secondary"
+        app:layout_constraintTop_toBottomOf="@id/txtCitasTitulo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Botón para seleccionar fecha -->
     <Button
         android:id="@+id/btn_fecha"
         android:layout_width="250dp"
-    android:layout_height="60dp"
-    android:layout_marginTop="30dp"
-    android:backgroundTint="@color/colorButtonPrimary"
-    android:text="Seleccionar Fecha"
-    android:textColor="@android:color/white"
-    android:textSize="18sp"
-    app:layout_constraintTop_toBottomOf="@id/spinner_masajes"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp" />
+        android:layout_height="wrap_content"
+        android:text="Seleccionar Fecha"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/color_button"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/spinner_masajes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Botón para seleccionar hora -->
     <Button
         android:id="@+id/btn_hora"
         android:layout_width="250dp"
-    android:layout_height="60dp"
-    android:layout_marginTop="30dp"
-    android:backgroundTint="@color/colorButtonPrimary"
-    android:text="Seleccionar Hora"
-    android:textColor="@android:color/white"
-    android:textSize="18sp"
-    app:layout_constraintTop_toBottomOf="@id/btn_fecha"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp" />
+        android:layout_height="wrap_content"
+        android:text="Seleccionar Hora"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/color_button"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/btn_fecha"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Resumen de la reserva -->
+    <!-- Resumen de la cita -->
     <TextView
         android:id="@+id/txt_resumen"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Resumen de la reserva"
-        android:textSize="18sp"
-        android:textStyle="italic"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:background="@color/color_secondary"
         android:textColor="@color/color_text_dark"
         app:layout_constraintTop_toBottomOf="@id/btn_hora"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Botón de confirmar reserva -->
+    <!-- Botón para confirmar reserva -->
     <Button
         android:id="@+id/btn_confirmar"
         android:layout_width="250dp"
-    android:layout_height="60dp"
-    android:layout_marginTop="40dp"
-    android:backgroundTint="@color/colorButtonPrimary"
-    android:text="Confirmar Reserva"
-    android:textColor="@android:color/white"
-    android:textSize="20sp"
-    app:layout_constraintTop_toBottomOf="@id/txt_resumen"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp" />
+        android:layout_height="wrap_content"
+        android:text="Confirmar Reserva"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/color_button"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/txt_resumen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Botón para volver al menú -->
+    <Button
+        android:id="@+id/btn_volver_menu"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/color_secondary"
+        android:text="Volver al Menú"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/btn_confirmar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

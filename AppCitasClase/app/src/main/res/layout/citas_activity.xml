@@ -2,22 +2,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/color_background"
+    android:gravity="center">
 
-    <!-- Layout para contener las citas -->
+    <!-- titulo para las citas -->
+    <TextView
+        android:id="@+id/txtCitasTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tus Citas"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_text_dark"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Contenedor d las citas -->
     <LinearLayout
-        android:id="@+id/layout_citas"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:padding="16dp" />
-
-    <!-- Botón para volver al menú principal -->
-    <Button
-        android:id="@+id/btn_volver_menu"
+        android:id="@+id/linearLayoutCitas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Volver al Menú" />
+        android:orientation="vertical"
+        android:background="@color/color_secondary"
+        android:padding="8dp"
+        android:elevation="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
 
+    <!-- Botón para volver al menú -->
+    <Button
+        android:id="@+id/btn_volver_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Volver al Menú"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/colorButtonSecondary"
+        android:textColor="@android:color/white" />
 </LinearLayout>

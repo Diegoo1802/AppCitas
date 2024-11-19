@@ -1,21 +1,28 @@
 package com.example.appcitasclase;
+
 public class Usuario {
+    private String nombre;
     private String email;
     private String password;
-    private String nombre;
 
-    // Constructor vacío requerido para Firestore
     public Usuario() {
+        // Constructor vacío necesario para Firestore
     }
 
-    // Constructor para crear un usuario
-    public Usuario(String email, String password, String nombre) {
+    public Usuario(String nombre, String email, String password) {
+        this.nombre = nombre;
         this.email = email;
         this.password = password;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    // Getters y Setters
     public String getEmail() {
         return email;
     }
@@ -30,13 +37,5 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 }

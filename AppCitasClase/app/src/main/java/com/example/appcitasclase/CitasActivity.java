@@ -1,8 +1,8 @@
 package com.example.appcitasclase;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -11,105 +11,116 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CitasActivity extends AppCompatActivity {
 
-    private LinearLayout citasLayout;
-    private Button btnVolverMenu;
+    private LinearLayout linearLayoutCitas;
     private FirebaseFirestore db;
     private String userId;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.citas_activity);
 
+        // Inicializar elementos de la vista
+        linearLayoutCitas = findViewById(R.id.linearLayoutCitas);
+
         // Inicializar Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Obtener el ID del usuario desde el Intent
+        // Obtener el userId desde el intent
         userId = getIntent().getStringExtra("USER_ID");
 
-        // Inicializar vistas
-        citasLayout = findViewById(R.id.layout_citas);
-        btnVolverMenu = findViewById(R.id.btn_volver_menu);
+        if (userId == null || userId.isEmpty()) {
+            Toast.makeText(this, "Usuario no encontrado. Por favor, vuelve a iniciar sesión.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-        // Cargar las citas
-        loadCitas();
-
-        // Configurar el botón para volver al menú
+        // Configurar el botón "Volver al menú"
+        Button btnVolverMenu = findViewById(R.id.btn_volver_menu);
         btnVolverMenu.setOnClickListener(v -> {
             Intent intent = new Intent(CitasActivity.this, MenuActivity.class);
+            intent.putExtra("USER_ID", userId);
             startActivity(intent);
-            finish(); // Finalizamos esta actividad
+            finish();
         });
+
+        // Cargar las citas del usuario
+        loadUserCitas(userId);
     }
 
     // Método para cargar las citas del usuario desde Firestore
-    private void loadCitas() {
-        db.collection("citas")
-                .whereEqualTo("userId", userId) // Filtrar por el ID del usuario
+    private void loadUserCitas(String userId) {
+        db.collection("reservas")
+                .document(userId)
+                .collection("reservasUsuario")
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Cita cita = document.toObject(Cita.class);
-                            cita.setId(document.getId());  // Asignar el ID del documento de Firestore
-
-                            // Crear un TextView para cada cita y añadir un botón para eliminarla
-                            addCitaToLayout(cita);
-                        }
+                .addOnSuccessListener(querySnapshot -> {
+                    List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+                    if (documents.isEmpty()) {
+                        showNoCitasMessage();
                     } else {
-                        Toast.makeText(CitasActivity.this, "Error al cargar las citas", Toast.LENGTH_SHORT).show();
+                        for (DocumentSnapshot document : documents) {
+                            displayCita(document);
+                        }
                     }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CitasActivity", "Error al cargar citas", e);
+                    Toast.makeText(CitasActivity.this, "Error al cargar citas", Toast.LENGTH_SHORT).show();
                 });
     }
 
-    // Método para añadir una cita al layout y mostrar botones de eliminar
-    private void addCitaToLayout(Cita cita) {
-        // Crear un contenedor para cada cita
-        LinearLayout citaItemLayout = new LinearLayout(this);
-        citaItemLayout.setOrientation(LinearLayout.VERTICAL);
-        citaItemLayout.setPadding(16, 16, 16, 16);
-
-        // Crear un TextView con la información de la cita
-        TextView txtCita = new TextView(this);
-        txtCita.setText("Fecha: " + cita.getFecha() + "\nHora: " + cita.getHora() + "\nTipo: " + cita.getTipoMasaje());
-        txtCita.setTextSize(16);
-
-        // Crear el botón para eliminar la cita
-        Button btnEliminarCita = new Button(this);
-        btnEliminarCita.setText("Eliminar Cita");
-        btnEliminarCita.setOnClickListener(v -> {
-            eliminarCita(cita);
-        });
-
-        // Añadir los elementos al layout de la cita
-        citaItemLayout.addView(txtCita);
-        citaItemLayout.addView(btnEliminarCita);
-
-        // Añadir la cita al layout principal
-        citasLayout.addView(citaItemLayout);
+    // Muestra un mensaje cuando no hay citas
+    private void showNoCitasMessage() {
+        TextView noCitasMessage = new TextView(this);
+        noCitasMessage.setText("No tienes citas programadas.");
+        noCitasMessage.setTextSize(18);
+        noCitasMessage.setPadding(16, 16, 16, 16);
+        linearLayoutCitas.addView(noCitasMessage);
     }
 
-    // Método para eliminar una cita de Firestore
-    private void eliminarCita(Cita cita) {
-        db.collection("citas").document(cita.getId())
+    // Muestra una cita en la pantalla
+    private void displayCita(DocumentSnapshot document) {
+        String masaje = document.getString("masaje");
+        String fecha = document.getString("fecha");
+        String hora = document.getString("hora");
+
+        // Crear un TextView para mostrar la cita
+        TextView citaView = new TextView(this);
+        citaView.setText(String.format("Masaje: %s\nFecha: %s\nHora: %s", masaje, fecha, hora));
+        citaView.setTextSize(16);
+        citaView.setPadding(16, 16, 16, 16);
+        linearLayoutCitas.addView(citaView);
+
+        // Botón para eliminar la cita
+        Button btnEliminar = new Button(this);
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setOnClickListener(v -> eliminarCita(document.getId()));
+        linearLayoutCitas.addView(btnEliminar);
+    }
+
+    // Método para eliminar una cita
+    private void eliminarCita(String citaId) {
+        db.collection("reservas")
+                .document(userId)
+                .collection("reservasUsuario")
+                .document(citaId)
                 .delete()
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(CitasActivity.this, "Cita eliminada correctamente", Toast.LENGTH_SHORT).show();
-                    // Volver a cargar las citas después de eliminar
-                    citasLayout.removeAllViews();  // Limpiar las vistas actuales
-                    loadCitas();  // Recargar las citas
+                    Toast.makeText(this, "Cita eliminada con éxito", Toast.LENGTH_SHORT).show();
+                    recreate(); // Recargar la actividad para actualizar las citas
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(CitasActivity.this, "Error al eliminar la cita", Toast.LENGTH_SHORT).show();
+                    Log.e("CitasActivity", "Error al eliminar cita", e);
+                    Toast.makeText(this, "Error al eliminar cita", Toast.LENGTH_SHORT).show();
                 });
     }
 }
