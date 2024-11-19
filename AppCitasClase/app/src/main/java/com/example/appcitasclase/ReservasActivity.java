@@ -46,6 +46,16 @@ public class ReservasActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        // Verificar que el usuario está autenticado
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // Si no hay usuario autenticado, redirigir a la pantalla de login o mostrar mensaje
+            Toast.makeText(this, "Por favor, inicia sesión", Toast.LENGTH_SHORT).show();
+            finish(); // Cerrar la actividad si el usuario no está autenticado
+        } else {
+            Log.d("Reserva", "Usuario autenticado: " + currentUser.getUid());
+        }
+
         // Configuramos el Spinner de masajes
         setupSpinner();
 
@@ -67,26 +77,19 @@ public class ReservasActivity extends AppCompatActivity {
 
     // Método para seleccionar la fecha
     private void selectDate() {
-        // Crear un MaterialDatePicker
         MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Seleccionar Fecha")
                 .build();
 
-        // Mostrar el date picker
         datePicker.show(getSupportFragmentManager(), "DATE_PICKER");
-
-        // Añadir listener cuando se elija una fecha
         datePicker.addOnPositiveButtonClickListener(selection -> {
-            // Convertir el Long timestamp a fecha y asignar a fechaSeleccionada
             fechaSeleccionada = datePicker.getHeaderText();
-            // Actualizar el resumen
             actualizarResumen();
         });
     }
 
     // Método para seleccionar la hora
     private void selectTime() {
-        // Crear un MaterialTimePicker
         MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
                 .setTimeFormat(TimeFormat.CLOCK_24H)
                 .setTitleText("Seleccionar Hora")
@@ -94,24 +97,16 @@ public class ReservasActivity extends AppCompatActivity {
                 .setMinute(0)
                 .build();
 
-        // Mostrar el time picker
         timePicker.show(getSupportFragmentManager(), "TIME_PICKER");
-
-        // Añadir listener cuando se elija la hora
         timePicker.addOnPositiveButtonClickListener(view -> {
-            // Obtener la hora y los minutos seleccionados
             int hour = timePicker.getHour();
             int minute = timePicker.getMinute();
 
-            // Validar que la hora esté entre las 8:00 y las 22:00
             if (hour < 8 || hour > 21) {
                 Toast.makeText(this, "Solo puedes seleccionar horas entre las 8:00 y las 22:00", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            // Formatear la hora seleccionada
             horaSeleccionada = String.format("%02d:%02d", hour, minute);
-            // Actualizar el resumen
             actualizarResumen();
         });
     }
@@ -133,6 +128,7 @@ public class ReservasActivity extends AppCompatActivity {
         // Obtener el ID del usuario actual
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
+            // No debería llegar a este punto si el usuario está autenticado, pero se incluye como control
             Toast.makeText(this, "Por favor, inicia sesión", Toast.LENGTH_SHORT).show();
             return;  // No continuar si no hay usuario autenticado
         }
@@ -147,16 +143,14 @@ public class ReservasActivity extends AppCompatActivity {
         reserva.put("hora", horaSeleccionada);
         reserva.put("usuario", userId);
 
-        // Crear una referencia a la colección de reservas
+        // Guardar la reserva en Firestore
         db.collection("reservas")
+                .document(userId)  // Usamos el UID del usuario para almacenar las reservas bajo su nombre
+                .collection("reservasUsuario")
                 .add(reserva)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Reserva", "Reserva guardada con éxito");
                     Toast.makeText(this, "Reserva confirmada con éxito", Toast.LENGTH_SHORT).show();
-
-                    // Redirigir a la página de citas
-                    // Intent intent = new Intent(ReservasActivity.this, CitasActivity.class);
-                    // startActivity(intent);
                     finish();  // Cerrar la pantalla de reservas
                 })
                 .addOnFailureListener(e -> {
