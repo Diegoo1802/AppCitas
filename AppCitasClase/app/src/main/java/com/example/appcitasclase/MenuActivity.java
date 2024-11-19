@@ -1,3 +1,5 @@
+package com.example.appcitasclase;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -6,10 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.appcitasclase.CitasActivity;
-import com.example.appcitasclase.ReservasActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -42,13 +41,23 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         btn_citas.setOnClickListener(v -> {
-            // Verificar si el usuario está registrado antes de acceder a la actividad de Citas
-            verificarUsuarioYAcceder("CitasActivity");
+            // Redirigir a CitasActivity
+            Intent intent = new Intent(MenuActivity.this, CitasActivity.class);
+            startActivity(intent);
         });
 
         btn_reservas.setOnClickListener(v -> {
-            // Verificar si el usuario está registrado antes de acceder a la actividad de Reservas
-            verificarUsuarioYAcceder("ReservasActivity");
+            // Recuperamos el userId que pasamos desde la actividad anterior (por ejemplo, LoginActivity)
+            String userId = getIntent().getStringExtra("USER_ID");
+
+            if (userId != null && !userId.isEmpty()) {
+                // Redirigir a ReservasActivity y pasar el userId
+                Intent intent = new Intent(MenuActivity.this, ReservasActivity.class);
+                intent.putExtra("USER_ID", userId); // Pasamos el userId al Intent
+                startActivity(intent);
+            } else {
+                Toast.makeText(MenuActivity.this, "No se encontró el ID de usuario", Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Configurar el listener para el botón de cierre de sesión
@@ -65,38 +74,6 @@ public class MenuActivity extends AppCompatActivity {
         if (userName != null && !userName.isEmpty()) {
             // Mostrar el nombre del usuario en el TextView de bienvenida
             txt_bienvenida.setText("¡Bienvenido, " + userName + "!");
-        }
-    }
-
-    // Método para verificar si el usuario está registrado en Firestore antes de acceder a una actividad
-    private void verificarUsuarioYAcceder(String activityName) {
-        // Supongamos que tienes un campo 'userId' que almacena el ID del usuario
-        String userId = "someUserId";  // Aquí es donde debes obtener el ID de usuario de alguna manera
-
-        if (userId != null && !userId.isEmpty()) {
-            // Verificar si el usuario existe en Firestore
-            db.collection("usuarios").document(userId)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            // Si el usuario existe, podemos permitir el acceso
-                            if (activityName.equals("CitasActivity")) {
-                                Intent intent = new Intent(MenuActivity.this, CitasActivity.class);
-                                startActivity(intent);
-                            } else if (activityName.equals("ReservasActivity")) {
-                                Intent intent = new Intent(MenuActivity.this, ReservasActivity.class);
-                                startActivity(intent);
-                            }
-                        } else {
-                            // Si no existe el usuario, muestra un mensaje de error
-                            Toast.makeText(MenuActivity.this, "Usuario no encontrado. Por favor, regístrate.", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(MenuActivity.this, "Error al verificar el usuario", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Toast.makeText(MenuActivity.this, "Por favor, inicia sesión primero.", Toast.LENGTH_SHORT).show();
         }
     }
 }

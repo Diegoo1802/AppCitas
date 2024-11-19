@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Colores generales -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>     <!-- Colores suaves y tranquilos para un ambiente hospitalario -->
-        <color name="color_primary">#A1C4FD</color> <!-- Azul pastel (color principal) -->
-        <color name="color_secondary">#C8E6C9</color> <!-- Verde pastel suave -->
-        <color name="color_background">#F5F5F5</color> <!-- Fondo gris claro -->
-        <color name="color_button">#81C784</color> <!-- Verde suave para botones -->
-        <color name="color_white">#FFFFFF</color> <!-- Blanco puro -->
-        <color name="color_text_dark">#212121</color> <!-- Gris oscuro para texto (muy legible) -->
-        <color name="color_hint">#9E9E9E</color> <!-- Gris suave para los hints en los campos de texto -->
-        <color name="color_button_secondary">#C8E6C9</color> <!-- Verde pastel para botones secundarios (por ejemplo, registro) -->
-        <color name="color_text_light">#757575</color> <!-- Gris intermedio para textos no tan destacados -->
-        <color name="color_border">#B0BEC5</color> <!-- Gris medio para bordes o divisores -->
-        <color name="color_accent">#64B5F6</color> <!-- Azul suave para elementos destacados -->
-        <color name="colorButtonPrimary">#81C784</color> <!-- Verde suave para botones principales -->
-        <color name="colorButtonSecondary">#FF7043</color> <!-- Rojo suave para botón de cierre de sesión -->
+    <color name="color_primary">#A1C4FD</color> <!-- Azul pastel (color principal) -->
+    <color name="color_secondary">#C8E6C9</color> <!-- Verde pastel suave -->
+    <color name="color_background">#F5F5F5</color> <!-- Fondo gris claro -->
+    <color name="color_button">#81C784</color> <!-- Verde suave para botones -->
+    <color name="color_white">#FFFFFF</color> <!-- Blanco puro -->
+    <color name="color_text_dark">#212121</color> <!-- Gris oscuro para texto (muy legible) -->
+    <color name="color_hint">#9E9E9E</color> <!-- Gris suave para los hints en los campos de texto -->
+    <color name="color_button_secondary">#C8E6C9</color> <!-- Verde pastel para botones secundarios (por ejemplo, registro) -->
+    <color name="color_text_light">#757575</color> <!-- Gris intermedio para textos no tan destacados -->
+    <color name="color_border">#B0BEC5</color> <!-- Gris medio para bordes o divisores -->
+    <color name="color_accent">#64B5F6</color> <!-- Azul suave para elementos destacados -->
+    <color name="colorButtonPrimary">#81C784</color> <!-- Verde suave para botones principales -->
+    <color name="colorButtonSecondary">#FF7043</color> <!-- Rojo suave para botón de cierre de sesión -->
 
 </resources>

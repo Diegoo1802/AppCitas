@@ -14,8 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -27,7 +25,6 @@ public class ReservasActivity extends AppCompatActivity {
     private TextView txtResumen;
     private String fechaSeleccionada, horaSeleccionada, masajeSeleccionado;
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
     @Override
@@ -42,18 +39,16 @@ public class ReservasActivity extends AppCompatActivity {
         btnConfirmar = findViewById(R.id.btn_confirmar);
         txtResumen = findViewById(R.id.txt_resumen);
 
-        // Inicializamos FirebaseAuth y Firestore
-        mAuth = FirebaseAuth.getInstance();
+        // Inicializamos Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Verificar que el usuario está autenticado
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            // Si no hay usuario autenticado, redirigir a la pantalla de login o mostrar mensaje
-            Toast.makeText(this, "Por favor, inicia sesión", Toast.LENGTH_SHORT).show();
-            finish(); // Cerrar la actividad si el usuario no está autenticado
-        } else {
-            Log.d("Reserva", "Usuario autenticado: " + currentUser.getUid());
+        // Recuperamos el userId que pasamos desde MenuActivity
+        String userId = getIntent().getStringExtra("USER_ID");
+
+        if (userId == null || userId.isEmpty()) {
+            Toast.makeText(this, "Usuario no encontrado. Por favor, vuelve a iniciar sesión.", Toast.LENGTH_SHORT).show();
+            finish();  // Termina la actividad si no encontramos el userId
+            return;
         }
 
         // Configuramos el Spinner de masajes
@@ -64,7 +59,7 @@ public class ReservasActivity extends AppCompatActivity {
         btnHora.setOnClickListener(v -> selectTime());
 
         // El OnClickListener para el botón de confirmar
-        btnConfirmar.setOnClickListener(v -> confirmarReserva());
+        btnConfirmar.setOnClickListener(v -> confirmarReserva(userId));
     }
 
     // Configura el Spinner de masajes
@@ -118,36 +113,25 @@ public class ReservasActivity extends AppCompatActivity {
     }
 
     // Método para confirmar la reserva
-    public void confirmarReserva() {
+    private void confirmarReserva(String userId) {
         // Verificar que se hayan seleccionado todos los campos
         if (fechaSeleccionada == null || horaSeleccionada == null || masajeSeleccionado == null) {
             Toast.makeText(this, "Por favor, selecciona todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Obtener el ID del usuario actual
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            // No debería llegar a este punto si el usuario está autenticado, pero se incluye como control
-            Toast.makeText(this, "Por favor, inicia sesión", Toast.LENGTH_SHORT).show();
-            return;  // No continuar si no hay usuario autenticado
-        }
-
-        String userId = currentUser.getUid();
-        Log.d("Reserva", "Usuario autenticado: " + userId);
-
         // Crear un HashMap con los datos de la reserva
         HashMap<String, Object> reserva = new HashMap<>();
         reserva.put("masaje", masajeSeleccionado);
         reserva.put("fecha", fechaSeleccionada);
         reserva.put("hora", horaSeleccionada);
-        reserva.put("usuario", userId);
+        reserva.put("usuario", userId);  // Guardamos el ID de usuario para poder asociar la reserva a él
 
         // Guardar la reserva en Firestore
-        db.collection("reservas")
+        db.collection("reservas")  // Accede a la colección 'reservas'
                 .document(userId)  // Usamos el UID del usuario para almacenar las reservas bajo su nombre
-                .collection("reservasUsuario")
-                .add(reserva)
+                .collection("reservasUsuario")  // Subcolección donde almacenamos las reservas de cada usuario
+                .add(reserva)  // Añadimos la reserva
                 .addOnSuccessListener(documentReference -> {
                     Log.d("Reserva", "Reserva guardada con éxito");
                     Toast.makeText(this, "Reserva confirmada con éxito", Toast.LENGTH_SHORT).show();

@@ -1,65 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
-    android:padding="16dp">
+    tools:context=".ReservasActivity">
 
+    <!-- Título principal -->
     <TextView
         android:id="@+id/tv_reserva"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Selecciona tu masaje, fecha y hora"
-        android:textSize="18sp"
-        android:textColor="@color/color_text_dark"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_accent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
 
+    <!-- Selector de masaje -->
     <Spinner
         android:id="@+id/spinner_masajes"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_reserva"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/color_white"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tv_reserva"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
 
+    <!-- Botón para seleccionar fecha -->
     <Button
         android:id="@+id/btn_fecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar Fecha"
-        android:layout_below="@id/spinner_masajes"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_width="250dp"
+    android:layout_height="60dp"
+    android:layout_marginTop="30dp"
+    android:backgroundTint="@color/colorButtonPrimary"
+    android:text="Seleccionar Fecha"
+    android:textColor="@android:color/white"
+    android:textSize="18sp"
+    app:layout_constraintTop_toBottomOf="@id/spinner_masajes"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp" />
 
+    <!-- Botón para seleccionar hora -->
     <Button
         android:id="@+id/btn_hora"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar Hora"
-        android:layout_below="@id/btn_fecha"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_width="250dp"
+    android:layout_height="60dp"
+    android:layout_marginTop="30dp"
+    android:backgroundTint="@color/colorButtonPrimary"
+    android:text="Seleccionar Hora"
+    android:textColor="@android:color/white"
+    android:textSize="18sp"
+    app:layout_constraintTop_toBottomOf="@id/btn_fecha"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp" />
 
+    <!-- Resumen de la reserva -->
     <TextView
         android:id="@+id/txt_resumen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Resumen de la reserva"
-        android:textSize="16sp"
+        android:textSize="18sp"
+        android:textStyle="italic"
         android:textColor="@color/color_text_dark"
-        android:layout_below="@id/btn_hora"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"/>
+        app:layout_constraintTop_toBottomOf="@id/btn_hora"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp" />
 
+    <!-- Botón de confirmar reserva -->
     <Button
         android:id="@+id/btn_confirmar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_resumen"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:background="@color/colorButtonPrimary"
-        android:text="Confirmar Reserva"
-        android:textColor="@android:color/white" />
+        android:layout_width="250dp"
+    android:layout_height="60dp"
+    android:layout_marginTop="40dp"
+    android:backgroundTint="@color/colorButtonPrimary"
+    android:text="Confirmar Reserva"
+    android:textColor="@android:color/white"
+    android:textSize="20sp"
+    app:layout_constraintTop_toBottomOf="@id/txt_resumen"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

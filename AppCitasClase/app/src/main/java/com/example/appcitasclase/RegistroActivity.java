@@ -11,15 +11,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Locale;
+
 public class RegistroActivity extends AppCompatActivity {
 
-    private EditText editTextNombre;  // Campo de texto para el nombre del usuario
-    private EditText editTextEmail;   // Campo de texto para el email
-    private EditText editTextPassword; // Campo de texto para la contraseña
+    private EditText editTextNombre;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
     private Button btnRegister;
-    private Button btnVolverInicio; // Botón para volver al inicio
+    private Button btnVolverInicio;
 
-    private FirebaseFirestore db; // Instancia de Firestore
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,54 +34,64 @@ public class RegistroActivity extends AppCompatActivity {
         // Inicializar las vistas
         editTextNombre = findViewById(R.id.txt_nombre);
         editTextEmail = findViewById(R.id.txt_email);
-        editTextPassword = findViewById(R.id.txt_password); // Campo de contraseña
+        editTextPassword = findViewById(R.id.txt_password);
         btnRegister = findViewById(R.id.btn_register);
-        btnVolverInicio = findViewById(R.id.btn_volverInicio); // Inicializamos el botón para volver al inicio
+        btnVolverInicio = findViewById(R.id.btn_volverInicio);
 
         // Configurar el botón de registro
         btnRegister.setOnClickListener(v -> createAccount());
 
         // Configurar el botón de volver al inicio
         btnVolverInicio.setOnClickListener(v -> {
-            Intent intent = new Intent(RegistroActivity.this, InicioActivity.class); // Redirigir al inicio
+            Intent intent = new Intent(RegistroActivity.this, InicioActivity.class);
             startActivity(intent);
-            finish(); // Finaliza la actividad actual para que el usuario no pueda volver con el botón de atrás
+            finish();
         });
     }
 
-    // Método para crear una cuenta de usuario
     private void createAccount() {
         String nombre = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim(); // Obtener la contraseña
+        String password = editTextPassword.getText().toString().trim();
 
-        // Validar que los campos no estén vacíos
         if (TextUtils.isEmpty(nombre) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(RegistroActivity.this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Crear un objeto Usuario con los valores proporcionados
-        Usuario usuario = new Usuario(nombre, email, password); // Pasar también la contraseña
+        // Formatear el nombre para que sea parte del ID
+        String nombreFormateado = nombre.toLowerCase(Locale.ROOT).replaceAll("\\s+", "_");
 
-        // Generar un ID único para el nuevo usuario en Firestore
-        String userId = db.collection("usuarios").document().getId(); // Generar un ID único automáticamente
-
-        // Guardar los datos del usuario en Firestore con un ID único
+        // Obtener el número total de usuarios para generar un ID único
         db.collection("usuarios")
-                .document(userId) // Usar el ID único generado
-                .set(usuario) // Guardar los datos
-                .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(RegistroActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int totalUsuarios = queryDocumentSnapshots.size(); // Contar los usuarios existentes
+                    String userId = nombreFormateado + "_" + (totalUsuarios + 1); // Generar el ID único
 
-                    // Redirigir al usuario al menú principal
-                    Intent intent = new Intent(RegistroActivity.this, MenuActivity.class);
-                    intent.putExtra("USER_ID", userId);  // Pasar el userId al MenuActivity
-                    startActivity(intent);
-                    finish(); // Finaliza la actividad actual para evitar que el usuario vuelva atrás
+                    // Crear el objeto del usuario correctamente, asignando nombre, email y password
+                    Usuario usuario = new Usuario(email, password, nombre); // Aseguramos que email, password y nombre estén en el orden correcto
+
+                    // Guardar el usuario en Firestore con el ID personalizado
+                    db.collection("usuarios")
+                            .document(userId)
+                            .set(usuario)
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(RegistroActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+
+                                // Redirigir al menú principal
+                                Intent intent = new Intent(RegistroActivity.this, MenuActivity.class);
+                                intent.putExtra("USER_ID", userId);
+                                intent.putExtra("USER_NAME", nombre);
+                                startActivity(intent);
+                                finish();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(RegistroActivity.this, "Error al registrar usuario: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(RegistroActivity.this, "Error al registrar usuario: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegistroActivity.this, "Error al verificar usuarios existentes: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
 }
