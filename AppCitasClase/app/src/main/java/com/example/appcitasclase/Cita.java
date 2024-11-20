@@ -1,17 +1,15 @@
 package com.example.appcitasclase;
 
 public class Cita {
-    private String id;  // ID único de la cita
-    private String fecha;  // Fecha de la cita
-    private String hora;  // Hora de la cita
-    private String tipoMasaje;  // Tipo de masaje
-    private String estado;  // Estado de la cita (confirmada, pendiente, etc.)
+    private String id;
+    private String fecha;
+    private String hora;
+    private String tipoMasaje;
+    private String estado;
 
     public Cita() {
-        // Constructor vacío necesario para Firestore
     }
 
-    // Constructor con parámetros
     public Cita(String id, String fecha, String hora, String tipoMasaje, String estado) {
         this.id = id;
         this.fecha = fecha;
@@ -20,7 +18,6 @@ public class Cita {
         this.estado = estado;
     }
 
-    // Getters y setters
     public String getId() {
         return id;
     }

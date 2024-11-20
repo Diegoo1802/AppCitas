@@ -7,7 +7,7 @@ public class Reserva {
     private String hora;
 
     public Reserva() {
-        // Constructor vacío necesario para Firebase
+
     }
 
     public Reserva(String usuario, String masaje, String fecha, String hora) {

@@ -33,7 +33,6 @@ public class ReservasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reservas_activity);
 
-        // Inicializar elementos de la vista
         spinnerMasajes = findViewById(R.id.spinner_masajes);
         btnFecha = findViewById(R.id.btn_fecha);
         btnHora = findViewById(R.id.btn_hora);
@@ -41,10 +40,9 @@ public class ReservasActivity extends AppCompatActivity {
         btnVolverMenu = findViewById(R.id.btn_volver_menu);
         txtResumen = findViewById(R.id.txt_resumen);
 
-        // Inicializar Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Obtener el userId desde el intent
+        // Obtenemos el userId desde el intent
         userId = getIntent().getStringExtra("USER_ID");
 
         if (userId == null || userId.isEmpty()) {
@@ -53,15 +51,13 @@ public class ReservasActivity extends AppCompatActivity {
             return;
         }
 
-        // Configurar el Spinner de masajes
+        //Seleccionador de masajes
         setupSpinner();
 
-        // Configurar botones
+        // Configuracion para los botones
         btnFecha.setOnClickListener(v -> selectDate());
         btnHora.setOnClickListener(v -> selectTime());
         btnConfirmar.setOnClickListener(v -> confirmarReserva(userId));
-
-        // Configurar botón "Volver al menú"
         btnVolverMenu.setOnClickListener(v -> {
             Intent intent = new Intent(ReservasActivity.this, MenuActivity.class);
             intent.putExtra("USER_ID", userId); // Pasar el USER_ID al menú

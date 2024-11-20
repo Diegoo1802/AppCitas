@@ -27,23 +27,18 @@ public class InicioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.inicio_activity);
 
-        // Inicializar Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Inicializar vistas
         editTextUsername = findViewById(R.id.txt_usuario);
         editTextPassword = findViewById(R.id.txt_pass);
         btn_inicios = findViewById(R.id.btn_inicios);
         btn_registro = findViewById(R.id.btn_registro);
 
-        // Configurar el botón de registro
         btn_registro.setOnClickListener(v -> {
-            // Redirigir a la actividad de registro
             Intent intent = new Intent(InicioActivity.this, RegistroActivity.class);
             startActivity(intent);
         });
 
-        // Configurar el botón de inicio de sesión
         btn_inicios.setOnClickListener(v -> loginUser());
     }
 
@@ -56,7 +51,6 @@ public class InicioActivity extends AppCompatActivity {
             return;
         }
 
-        // Convertir el correo a minúsculas para evitar discrepancias
         email = email.toLowerCase();
 
         // Buscar el usuario por email en la colección de Firestore
@@ -91,7 +85,6 @@ public class InicioActivity extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            // Si no se encuentra el usuario con ese email
                             Toast.makeText(InicioActivity.this, "Usuario no registrado", Toast.LENGTH_SHORT).show();
                         }
                     } else {

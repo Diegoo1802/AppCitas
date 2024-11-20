@@ -28,10 +28,8 @@ public class CitasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.citas_activity);
 
-        // Inicializar elementos de la vista
         linearLayoutCitas = findViewById(R.id.linearLayoutCitas);
 
-        // Inicializar Firestore
         db = FirebaseFirestore.getInstance();
 
         // Obtener el userId desde el intent
@@ -43,7 +41,6 @@ public class CitasActivity extends AppCompatActivity {
             return;
         }
 
-        // Configurar el botón "Volver al menú"
         Button btnVolverMenu = findViewById(R.id.btn_volver_menu);
         btnVolverMenu.setOnClickListener(v -> {
             Intent intent = new Intent(CitasActivity.this, MenuActivity.class);
@@ -56,7 +53,7 @@ public class CitasActivity extends AppCompatActivity {
         loadUserCitas(userId);
     }
 
-    // Método para cargar las citas del usuario desde Firestore
+    //Cargar las citas del usuario desde Firestore
     private void loadUserCitas(String userId) {
         db.collection("reservas")
                 .document(userId)
@@ -100,14 +97,13 @@ public class CitasActivity extends AppCompatActivity {
         citaView.setPadding(16, 16, 16, 16);
         linearLayoutCitas.addView(citaView);
 
-        // Botón para eliminar la cita
         Button btnEliminar = new Button(this);
         btnEliminar.setText("Eliminar");
         btnEliminar.setOnClickListener(v -> eliminarCita(document.getId()));
         linearLayoutCitas.addView(btnEliminar);
     }
 
-    // Método para eliminar una cita
+    // Eliminar una cita
     private void eliminarCita(String citaId) {
         db.collection("reservas")
                 .document(userId)

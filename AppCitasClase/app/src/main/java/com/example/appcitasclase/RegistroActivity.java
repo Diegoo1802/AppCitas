@@ -28,20 +28,16 @@ public class RegistroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registro_activity);
 
-        // Inicializar Firebase Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Inicializar las vistas
         editTextNombre = findViewById(R.id.txt_nombre);
         editTextEmail = findViewById(R.id.txt_email);
         editTextPassword = findViewById(R.id.txt_password);
         btnRegister = findViewById(R.id.btn_register);
         btnVolverInicio = findViewById(R.id.btn_volverInicio);
 
-        // Configurar el botón de registro
         btnRegister.setOnClickListener(v -> createAccount());
 
-        // Configurar el botón de volver al inicio
         btnVolverInicio.setOnClickListener(v -> {
             Intent intent = new Intent(RegistroActivity.this, InicioActivity.class);
             startActivity(intent);
@@ -59,27 +55,27 @@ public class RegistroActivity extends AppCompatActivity {
             return;
         }
 
-        // Formatear el nombre para que sea parte del ID
+        // Reiniciar el nombre para que sea parte del ID
         String nombreFormateado = nombre.toLowerCase(Locale.ROOT).replaceAll("\\s+", "_");
 
-        // Obtener el número total de usuarios para generar un ID único
+        // Obtenemos el número total de usuarios para hacer el ID
         db.collection("usuarios")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int totalUsuarios = queryDocumentSnapshots.size(); // Contar los usuarios existentes
-                    String userId = nombreFormateado + "_" + (totalUsuarios + 1); // Generar el ID único
+                    String userId = nombreFormateado + "_" + (totalUsuarios + 1); // Creamos el ID único
 
                     // Crear el objeto del usuario correctamente, asignando nombre, email y password
-                    Usuario usuario = new Usuario(email, password, nombre); // Aseguramos que email, password y nombre estén en el orden correcto
+                    Usuario usuario = new Usuario(email, password, nombre); // Orden correcto
 
-                    // Guardar el usuario en Firestore con el ID personalizado
+                    // Guardar el usuario en Firestore
                     db.collection("usuarios")
                             .document(userId)
                             .set(usuario)
                             .addOnSuccessListener(unused -> {
                                 Toast.makeText(RegistroActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
 
-                                // Redirigir al menú principal
+                                // Volver al menú principal
                                 Intent intent = new Intent(RegistroActivity.this, MenuActivity.class);
                                 intent.putExtra("USER_ID", userId);
                                 intent.putExtra("USER_NAME", nombre);

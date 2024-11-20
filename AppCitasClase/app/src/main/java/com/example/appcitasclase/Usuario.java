@@ -6,7 +6,6 @@ public class Usuario {
     private String password;
 
     public Usuario() {
-        // Constructor vacío necesario para Firestore
     }
 
     public Usuario(String nombre, String email, String password) {

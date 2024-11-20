@@ -31,7 +31,6 @@ public class MenuActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Inicializamos los elementos de la interfaz
         txt_bienvenida = findViewById(R.id.txt_bienvenida);
         btn_perfil = findViewById(R.id.btn_perfil);
         btn_citas = findViewById(R.id.btn_citas);
@@ -49,14 +48,14 @@ public class MenuActivity extends AppCompatActivity {
 
         // Verificar si el nombre de usuario está disponible
         if (userName == null || userName.isEmpty()) {
-            // Si no está disponible, buscar el nombre desde Firestore
+            // Si no está disponible buscar el nombre desde Firestore
             fetchUserNameFromFirestore(userId);
         } else {
-            // Si el nombre ya está disponible, mostrarlo
+            // Si el nombre ya está disponible que salga
             txt_bienvenida.setText("¡Bienvenido, " + userName + "!");
         }
 
-        // Navegar a PerfilActivity pasando el userId
+        // Ir a PerfilActivity pasando el userId
         btn_perfil.setOnClickListener(v -> {
             Intent intent = new Intent(MenuActivity.this, PerfilActivity.class);
             intent.putExtra("USER_ID", userId);
@@ -64,7 +63,7 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Navegar a CitasActivity pasando el userId
+        // Ir a CitasActivity pasando el userId
         btn_citas.setOnClickListener(v -> {
             Intent intent = new Intent(MenuActivity.this, CitasActivity.class);
             intent.putExtra("USER_ID", userId);
@@ -72,7 +71,7 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Navegar a ReservasActivity pasando el userId
+        // Ir a ReservasActivity pasando el userId
         btn_reservas.setOnClickListener(v -> {
             Intent intent = new Intent(MenuActivity.this, ReservasActivity.class);
             intent.putExtra("USER_ID", userId);
@@ -80,7 +79,7 @@ public class MenuActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Cerrar sesión y redirigir a la pantalla de inicio
+        // Cerrar sesión
         btn_logout.setOnClickListener(v -> {
             Intent intent = new Intent(MenuActivity.this, InicioActivity.class);
             startActivity(intent);
@@ -88,7 +87,7 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
-    /**
+    /*
      * Método para obtener el nombre del usuario desde Firestore
      */
     private void fetchUserNameFromFirestore(@NonNull String userId) {
